@@ -8,8 +8,7 @@ const sequelize = new Sequelize(
 	dbConfig.PASSWORD, {
 	host: dbConfig.HOST,
 	dialect: dbConfig.dialect
-}
-)
+})
 
 sequelize.authenticate()
 	.then(() => {
@@ -31,5 +30,15 @@ db.sequelize.sync({ force: false })
 	.then(() => {
 		console.log('yes re-sync done!')
 	})
+
+// one to many relationship
+db.products.hasMany(db.reviews, {
+	foreignKey: 'product_id',
+	as: 'review'
+})
+db.reviews.belongsTo(db.products, {
+	foreignKey: 'product_id',
+	as: 'product'
+})
 
 module.exports = db
